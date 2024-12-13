@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>GAME</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+	<canvas id="myCanvas" width="600" height="400"></canvas>
+  <p id="score">Score: 0</p>
+  <div class="sideByside">
+    <button id="startGame">Start Game</button>
+    <button id="stopGame">Stop Game</button>
+  </div>
+
+  <script type="text/javascript">
+    const canvas = document.getElementById("myCanvas");
+    const ctx = canvas.getContext("2d");
+    
+    // Oyun değişkenleri
+    let snake = [{ x: 200, y: 200 }];
+    let direction = { x: 20, y: 0 };
+    let bait = getRandomPosition();
+    let score = 0;
+    let lastFrameTime = 0;
+    const frameInterval = 100; // Move snake every 100 ms
+    let isGameRunning = false; // To track if the game is running
+    let animationFrameId; // To store the `requestAnimationFrame` ID
+
+    // Tuşlarla yön değiştirme
+    document.addEventListener("keydown", changeDirection);
+
+    document.getElementById("startGame").addEventListener("click", startGame);
+    document.getElementById("stopGame").addEventListener("click", stopGame);
+
+    function changeDirection(event) {
+      const key = event.key;
+      if (key === "ArrowUp" && direction.y === 0) direction = { x: 0, y: -20 };
+      if (key === "ArrowDown" && direction.y === 0) direction = { x: 0, y: 20 };
+      if (key === "ArrowLeft" && direction.x === 0) direction = { x: -20, y: 0 };
+      if (key === "ArrowRight" && direction.x === 0) direction = { x: 20, y: 0 };
+    }
+
+    // Rastgele yem pozisyonu
+    function getRandomPosition() {
+      const x = Math.floor(Math.random() * (canvas.width / 20)) * 20;
+      const y = Math.floor(Math.random() * (canvas.height / 20)) * 20;
+      return { x, y };
+    }
+
+    function startGame() {
+      if (!isGameRunning) {
+        isGameRunning = true;
+        requestAnimationFrame(gameLoop);
+      }
+    }
+
+    function stopGame() {
+      if (isGameRunning) {
+        isGameRunning = false;
+        cancelAnimationFrame(animationFrameId);
+      }
+    }
+
+    // Oyunu başlat
+    function gameLoop(timestamp) {
+      if (!isGameRunning) return;
+
+      if (isGameOver()) {
+        alert(`GAME OVER! Score: ${score}`);
+        document.location.reload();
+        return;
+      }
+
+      if (timestamp - lastFrameTime > frameInterval) {
+        clearCanvas();
+        drawBait();
+        moveSnake();
+        drawSnake();
+        updateScore();
+        lastFrameTime = timestamp;
+      }
+
+      animationFrameId = requestAnimationFrame(gameLoop);
+    }
+
+    // Oyun bitti mi kontrolü
+    function isGameOver() {
+      const head = snake[0];
+      const hitWall =
+        head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.height;
+      const hitSelf = snake.slice(1).some(segment => segment.x === head.x && segment.y === head.y);
+      return hitWall || hitSelf;
+    }
+
+    // Kanvas temizleme
+    function clearCanvas() {
+      ctx.fillStyle = "#fff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    // Yılanı çiz
+    function drawSnake() {
+      ctx.fillStyle = "#00FF00";
+      snake.forEach(segment => {
+        ctx.fillRect(segment.x, segment.y, 20, 20);
+      });
+    }
+
+    // Yemi çiz
+    function drawBait() {
+      ctx.fillStyle = "#FF0000";
+      ctx.fillRect(bait.x, bait.y, 20, 20);
+    }
+
+    // Yılanı hareket ettir
+    function moveSnake() {
+      const head = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
+      snake.unshift(head);
+
+      // Eğer yem yenirse
+      if (head.x === bait.x && head.y === bait.y) {
+        bait = getRandomPosition();
+        score++;
+      } else {
+        snake.pop();
+      }
+    }
+
+    // Skoru güncelle
+    function updateScore() {
+      document.getElementById("score").innerText = `Score: ${score}`;
+    }
+  </script>
+  
+</body>
+</html>
