@@ -7,7 +7,9 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+  <br>
+  <br>
+  <br>
 	<canvas id="myCanvas" width="600" height="400"></canvas>
   <p id="score">Score: 0</p>
   <div class="sideByside">
@@ -25,13 +27,12 @@
     let bait = getRandomPosition();
     let score = 0;
     let lastFrameTime = 0;
-    const frameInterval = 100; // Move snake every 100 ms
-    let isGameRunning = false; // To track if the game is running
-    let animationFrameId; // To store the `requestAnimationFrame` ID
+    const frameInterval = 100; // Her 100 ms
+    let isGameRunning = false; 
+    let animationFrameId; 
 
-    // Tuşlarla yön değiştirme
+    
     document.addEventListener("keydown", changeDirection);
-
     document.getElementById("startGame").addEventListener("click", startGame);
     document.getElementById("stopGame").addEventListener("click", stopGame);
 
@@ -43,7 +44,7 @@
       if (key === "ArrowRight" && direction.x === 0) direction = { x: 20, y: 0 };
     }
 
-    // Rastgele yem pozisyonu
+    
     function getRandomPosition() {
       const x = Math.floor(Math.random() * (canvas.width / 20)) * 20;
       const y = Math.floor(Math.random() * (canvas.height / 20)) * 20;
@@ -95,6 +96,13 @@
       return hitWall || hitSelf;
     }
 
+    // Yuvarlak çizme metodu
+    CanvasRenderingContext2D.prototype.fillCircle = function (x, y, radius) {
+      this.beginPath();
+      this.arc(x + radius, y + radius, radius, 0, Math.PI * 2);
+      this.fill();
+    };
+
     // Kanvas temizleme
     function clearCanvas() {
       ctx.fillStyle = "#fff";
@@ -103,16 +111,23 @@
 
     // Yılanı çiz
     function drawSnake() {
-      ctx.fillStyle = "#00FF00";
-      snake.forEach(segment => {
-        ctx.fillRect(segment.x, segment.y, 20, 20);
+      snake.forEach((segment, index) => {
+        if (index === 0) {
+          // Yılan kafası
+          ctx.fillStyle = "rgb(94,161,47)"; // Daha koyu bir yeşil renk
+          ctx.fillCircle(segment.x, segment.y, 10); // Kafa yuvarlağı
+        } else {
+          // Gövde
+          ctx.fillStyle = "rgb(179,230,93)"; // Yılanın gövde rengi
+          ctx.fillCircle(segment.x, segment.y, 10); // Gövde yuvarlağı
+        }
       });
     }
 
     // Yemi çiz
     function drawBait() {
-      ctx.fillStyle = "#FF0000";
-      ctx.fillRect(bait.x, bait.y, 20, 20);
+      ctx.fillStyle = "rgb(220,91,85)";
+      ctx.fillCircle(bait.x, bait.y, 10); // 10 yarıçap ile yuvarlak
     }
 
     // Yılanı hareket ettir

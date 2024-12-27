@@ -1,16 +1,20 @@
 body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #f0f0f0;
-    font-family: Arial, sans-serif;
-  }
-  
-  canvas {
-    background-color: #e0e0e0;
-    border: 2px solid #333;
-    margin-top: 50px;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f0f0f0;
+  background-image: url('snake-background.png'); /* Resmin yolu */
+  background-size: cover; /* Resmi tam ekran kaplayacak şekilde ayarlar */
+  background-position: center; /* Resmi merkeze yerleştirir */
+  background-repeat: no-repeat; /* Resmin tekrarını engeller */
+  font-family: Arial, sans-serif;
+}
+
+canvas {
+  background-color: rgba(255, 255, 255, 0.8); /* Şeffaf beyaz bir arka plan */
+  border: 2px solid #333;
+  margin-top: 50px;
+}
   
   #score {
     font-size: 20px;
