@@ -21,7 +21,6 @@
     const canvas = document.getElementById("myCanvas");
     const ctx = canvas.getContext("2d");
     
-    // Oyun değişkenleri
     let snake = [{ x: 200, y: 200 }];
     let direction = { x: 20, y: 0 };
     let bait = getRandomPosition();
@@ -70,6 +69,8 @@
       if (!isGameRunning) return;
 
       if (isGameOver()) {
+        const gameOverSound = new Audio("sounds/gameover1.mp3"); 
+        gameOverSound.play(); // Ses dosyasını çal
         alert(`GAME OVER! Score: ${score}`);
         document.location.reload();
         return;
@@ -96,14 +97,13 @@
       return hitWall || hitSelf;
     }
 
-    // Yuvarlak çizme metodu
+    // Yuvarlak çizme metodu(?)
     CanvasRenderingContext2D.prototype.fillCircle = function (x, y, radius) {
       this.beginPath();
       this.arc(x + radius, y + radius, radius, 0, Math.PI * 2);
       this.fill();
     };
 
-    // Kanvas temizleme
     function clearCanvas() {
       ctx.fillStyle = "#fff";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -124,7 +124,6 @@
       });
     }
 
-    // Yemi çiz
     function drawBait() {
       ctx.fillStyle = "rgb(220,91,85)";
       ctx.fillCircle(bait.x, bait.y, 10); // 10 yarıçap ile yuvarlak
@@ -137,6 +136,9 @@
 
       // Eğer yem yenirse
       if (head.x === bait.x && head.y === bait.y) {
+        // Ses dosyasını oynat
+        const eatSound = new Audio("sounds/eat.mp3"); 
+        eatSound.play();
         bait = getRandomPosition();
         score++;
       } else {

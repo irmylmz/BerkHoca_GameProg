@@ -3,7 +3,7 @@ body {
   flex-direction: column;
   align-items: center;
   background-color: #f0f0f0;
-  background-image: url('snake-background.png'); /* Resmin yolu */
+  background-image: url('img/snake-background.png'); /* Resmin yolu */
   background-size: cover; /* Resmi tam ekran kaplayacak şekilde ayarlar */
   background-position: center; /* Resmi merkeze yerleştirir */
   background-repeat: no-repeat; /* Resmin tekrarını engeller */
