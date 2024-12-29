@@ -1,4 +1,4 @@
 # BerkHoca_GameProg
-![Oyun Başlamadan](images/OyunBaşlamadan.png)
-![Oyun İçinde](images/Oyunİçinde.png)
-![Oyun Bitince](images/OyunBitince.png)
+![Oyun Başlamadan](img/OyunBaşlamadan.png)
+![Oyun İçinde](img/Oyunİçinde.png)
+![Oyun Bitince](img/OyunBitince.png)
